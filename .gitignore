@@ -1,0 +1,9 @@
+node_modules
+build
+bin
+*.tgz
+.DS_Store
+coverage
+bun.lock
+playwright-report
+test-results

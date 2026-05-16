@@ -1,0 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+
+echo "pre-commit: running linters..."
+make lint
+echo "pre-commit: lint passed."

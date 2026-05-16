@@ -1,0 +1,8 @@
+---
+level1:
+  level2:
+    level3:
+      key: deeply nested
+    another: value
+  sibling: here
+top: level

@@ -1,0 +1,7 @@
+---
+description: |
+  This is a multiline
+  string value
+list:
+  - item1
+  - item2
