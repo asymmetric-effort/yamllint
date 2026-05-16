@@ -5,18 +5,15 @@ export const type = "line";
 
 let consecutiveEmpty = 0;
 let lineCount = 0;
-let totalLines = 0;
 
-export function reset(total: number): void {
+export function reset(_total: number): void {
   consecutiveEmpty = 0;
   lineCount = 0;
-  totalLines = total;
 }
 
 export function* check(conf: RuleConf, line: LineInfo): Generator<LintProblem> {
   const max = conf.max as number;
   const maxStart = conf["max-start"] as number;
-  const maxEnd = conf["max-end"] as number;
 
   lineCount++;
 

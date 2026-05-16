@@ -3,19 +3,16 @@ import type { LintProblem, RuleConf, LineInfo } from "../types.js";
 export const id = "new-line-at-end-of-file";
 export const type = "line";
 
-let lastLine: LineInfo | null = null;
 let totalLineCount = 0;
 let currentCount = 0;
 
 export function reset(total: number): void {
-  lastLine = null;
   totalLineCount = total;
   currentCount = 0;
 }
 
-export function* check(conf: RuleConf, line: LineInfo): Generator<LintProblem> {
+export function* check(_conf: RuleConf, line: LineInfo): Generator<LintProblem> {
   currentCount++;
-  lastLine = line;
 
   // Only check on the last line
   if (currentCount === totalLineCount) {

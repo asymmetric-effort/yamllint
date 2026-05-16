@@ -2,7 +2,7 @@ import { readFileSync, existsSync } from "fs";
 import { join, dirname } from "path";
 import { parse as parseYamlString } from "yaml";
 import type { YamllintConfig, RuleConf, ResolvedRuleConfig, Severity } from "./types.js";
-import { getRuleDefinition, getAllRuleIds } from "./rules/index.js";
+import { getAllRuleIds } from "./rules/index.js";
 
 const DEFAULT_YAML_FILE_PATTERNS = ["*.yaml", "*.yml", ".yamllint"];
 

@@ -12,14 +12,13 @@ export function parseDirectives(source: string): {
 } {
   const disabledLines = new Map<number, Set<string> | null>();
   let disabledFile = false;
-  const disableBlocks: { rules: Set<string> | null }[] = [];
-
   const lines = source.split(/\n/);
+
+  // First pass: handle disable-file and disable-line
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const lineNum = i + 1;
 
-    // Check for yamllint directives in comments
     const commentMatch = line.match(/#\s*yamllint\s+(.*)/);
     if (!commentMatch) continue;
 
@@ -33,23 +32,6 @@ export function parseDirectives(source: string): {
     if (directive.startsWith("disable-line")) {
       const rules = parseRuleList(directive.slice("disable-line".length));
       disabledLines.set(lineNum, rules);
-      continue;
-    }
-
-    if (directive.startsWith("disable")) {
-      const rules = parseRuleList(directive.slice("disable".length));
-      disableBlocks.push({ rules });
-      continue;
-    }
-
-    if (directive.startsWith("enable")) {
-      const rules = parseRuleList(directive.slice("enable".length));
-      if (disableBlocks.length > 0) {
-        const block = disableBlocks.pop()!;
-        // Mark all lines between disable and enable
-        // This is handled differently - we track active blocks
-      }
-      continue;
     }
   }
 

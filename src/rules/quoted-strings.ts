@@ -6,7 +6,7 @@ export const type = "token";
 export function* check(
   conf: RuleConf,
   token: YamlToken | undefined,
-  prev: YamlToken | undefined,
+  _prev: YamlToken | undefined,
   _next: YamlToken | undefined,
   _nextnext: YamlToken | undefined,
   _context: TokenContext,

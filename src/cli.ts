@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync, statSync } from "fs";
-import { resolve, relative, extname, basename } from "path";
+import { resolve, relative, basename } from "path";
 import { VERSION } from "./version.js";
 import { findConfigFile, loadConfig, getYamlFilePatterns, getIgnorePatterns } from "./config.js";
 import { lint } from "./linter.js";

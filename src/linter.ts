@@ -1,11 +1,7 @@
 import type {
   LintProblem,
   ResolvedRuleConfig,
-  Comment,
-  LineInfo,
-  YamlToken,
   TokenContext,
-  Severity,
 } from "./types.js";
 import { tokenize, extractComments, getLines } from "./parser.js";
 import { getRuleDefinition } from "./rules/index.js";

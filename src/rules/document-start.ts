@@ -9,7 +9,7 @@ export function* check(
   prev: YamlToken | undefined,
   _next: YamlToken | undefined,
   _nextnext: YamlToken | undefined,
-  context: TokenContext,
+  _context: TokenContext,
 ): Generator<LintProblem> {
   if (!token) return;
 

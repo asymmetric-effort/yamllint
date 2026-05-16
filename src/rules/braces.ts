@@ -101,7 +101,7 @@ export function* check(
       context.stack.length > 0 &&
       context.stack[context.stack.length - 1].type === "flow-mapping-start"
     ) {
-      const open = context.stack.pop()!;
+      context.stack.pop();
       if (prev && prev.type !== "flow-mapping-start" && prev.startLine === token.startLine) {
         const spaces = token.startCol - prev.endCol;
         const min = conf["min-spaces-inside"] as number;

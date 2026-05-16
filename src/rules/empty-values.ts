@@ -6,16 +6,15 @@ export const type = "token";
 export function* check(
   conf: RuleConf,
   token: YamlToken | undefined,
-  prev: YamlToken | undefined,
+  _prev: YamlToken | undefined,
   next: YamlToken | undefined,
   _nextnext: YamlToken | undefined,
-  context: TokenContext,
+  _context: TokenContext,
 ): Generator<LintProblem> {
   if (!token) return;
 
   const forbidInBlockMappings = conf["forbid-in-block-mappings"] as boolean;
   const forbidInFlowMappings = conf["forbid-in-flow-mappings"] as boolean;
-  const forbidInBlockSequences = conf["forbid-in-block-sequences"] as boolean;
 
   if (forbidInBlockMappings) {
     if (
