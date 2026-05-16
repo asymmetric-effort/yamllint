@@ -6,6 +6,7 @@ export const type = "token";
 interface OrderTracker {
   lastKey: string | null;
   indent: number;
+  flow: boolean;
 }
 
 let orderStacks: OrderTracker[] = [];
@@ -30,29 +31,49 @@ export function* check(
   }
 
   if (token.type === "flow-mapping-start") {
-    orderStacks.push({ lastKey: null, indent: token.startCol });
+    orderStacks.push({ lastKey: null, indent: token.startCol, flow: true });
     return;
   }
 
   if (token.type === "flow-mapping-end") {
-    if (orderStacks.length > 0) {
+    if (orderStacks.length > 0 && orderStacks[orderStacks.length - 1].flow) {
       orderStacks.pop();
     }
     return;
   }
 
-  // Detect keys: scalar followed by value token (same as key-duplicates)
+  // Detect keys: scalar followed by value token
   if (token.type === "value" && prev && prev.type === "scalar" && prev.value !== undefined) {
     const keyCol = prev.startCol;
     const keyValue = prev.value;
 
-    // Manage indent levels
-    while (orderStacks.length > 0 && orderStacks[orderStacks.length - 1].indent > keyCol) {
+    // If inside a flow mapping, use that level directly
+    if (orderStacks.length > 0 && orderStacks[orderStacks.length - 1].flow) {
+      const current = orderStacks[orderStacks.length - 1];
+      if (current.lastKey !== null && keyValue < current.lastKey) {
+        yield {
+          line: prev.startLine,
+          column: prev.startCol,
+          rule: id,
+          level: "error",
+          message: `wrong ordering of key "${keyValue}" in mapping`,
+        };
+      }
+      current.lastKey = keyValue;
+      return;
+    }
+
+    // Block mapping: manage indent levels
+    while (
+      orderStacks.length > 0 &&
+      !orderStacks[orderStacks.length - 1].flow &&
+      orderStacks[orderStacks.length - 1].indent > keyCol
+    ) {
       orderStacks.pop();
     }
 
     if (orderStacks.length === 0 || orderStacks[orderStacks.length - 1].indent < keyCol) {
-      orderStacks.push({ lastKey: null, indent: keyCol });
+      orderStacks.push({ lastKey: null, indent: keyCol, flow: false });
     }
 
     const current = orderStacks[orderStacks.length - 1];

@@ -1,6 +1,6 @@
 {
   "name": "@asymmetric-effort/yamllint",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A zero-dependency TypeScript YAML parser, linter, and validator with detailed error reporting",
   "type": "module",
   "main": "build/index.js",

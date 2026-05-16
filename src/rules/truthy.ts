@@ -31,8 +31,8 @@ const TRUTHY_VALUES = [
 export function* check(
   conf: RuleConf,
   token: YamlToken | undefined,
-  prev: YamlToken | undefined,
-  _next: YamlToken | undefined,
+  _prev: YamlToken | undefined,
+  next: YamlToken | undefined,
   _nextnext: YamlToken | undefined,
   _context: TokenContext,
 ): Generator<LintProblem> {
@@ -43,8 +43,9 @@ export function* check(
   const allowedValues = (conf["allowed-values"] as string[]) || ["true", "false"];
   const checkKeys = conf["check-keys"] as boolean;
 
-  // Skip if this is a key and check-keys is false
-  if (!checkKeys && prev && prev.type === "key") return;
+  // Skip if this is a key (followed by value token) and check-keys is false
+  const isKey = next && next.type === "value";
+  if (!checkKeys && isKey) return;
 
   if (TRUTHY_VALUES.includes(val) && !allowedValues.includes(val)) {
     yield {
