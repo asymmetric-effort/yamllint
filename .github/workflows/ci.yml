@@ -53,6 +53,8 @@ jobs:
           path: build/
       - name: Build site
         run: cd site && npm install && npx vite build
+      - name: Run site e2e tests
+        run: cd site && npx playwright install --with-deps chromium && npx playwright test
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
