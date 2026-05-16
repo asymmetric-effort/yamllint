@@ -70,7 +70,10 @@ jobs:
   publish:
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && vars.NPM_PUBLISH == 'true'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -80,6 +83,5 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: build-artifacts
-      - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          path: build/
+      - run: npm publish --access public --provenance
