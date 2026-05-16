@@ -21,7 +21,7 @@ export function HomePage(): string {
         <span class="badge badge-primary">Zero Dependencies</span>
         <span class="badge">TypeScript</span>
         <span class="badge">MIT License</span>
-        <span class="badge">24 Rules</span>
+        <span class="badge">84% Coverage</span>
       </div>
     </div>
     <div class="section">

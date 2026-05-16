@@ -7,7 +7,7 @@ export function* check(
   conf: RuleConf,
   token: YamlToken | undefined,
   _prev: YamlToken | undefined,
-  _next: YamlToken | undefined,
+  next: YamlToken | undefined,
   _nextnext: YamlToken | undefined,
   _context: TokenContext,
 ): Generator<LintProblem> {
@@ -22,6 +22,9 @@ export function* check(
 
   // Skip block scalars
   if (style === "block") return;
+
+  // Skip key scalars (scalar followed by value token)
+  if (next && next.type === "value") return;
 
   // Determine if quoting is required
   if (required === true || required === "only-when-needed") {

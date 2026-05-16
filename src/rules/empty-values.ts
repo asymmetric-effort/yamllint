@@ -8,7 +8,7 @@ export function* check(
   token: YamlToken | undefined,
   _prev: YamlToken | undefined,
   next: YamlToken | undefined,
-  _nextnext: YamlToken | undefined,
+  nextnext: YamlToken | undefined,
   _context: TokenContext,
 ): Generator<LintProblem> {
   if (!token) return;
@@ -16,15 +16,14 @@ export function* check(
   const forbidInBlockMappings = conf["forbid-in-block-mappings"] as boolean;
   const forbidInFlowMappings = conf["forbid-in-flow-mappings"] as boolean;
 
-  if (forbidInBlockMappings) {
+  if (forbidInBlockMappings && token.type === "value") {
+    // Empty value: value token followed by another key at same/lower indent,
+    // or stream-end, or document markers
+    if (!next) return;
     if (
-      token.type === "value" &&
-      next &&
-      (next.type === "key" ||
-        next.type === "block-end" ||
-        next.type === "stream-end" ||
-        next.type === "document-start" ||
-        next.type === "document-end")
+      next.type === "stream-end" ||
+      next.type === "document-start" ||
+      next.type === "document-end"
     ) {
       yield {
         line: token.startLine,
@@ -33,15 +32,22 @@ export function* check(
         level: "error",
         message: `empty value in block mapping`,
       };
+    } else if (next.type === "scalar" && nextnext && nextnext.type === "value") {
+      // Next key-value pair at same or lower indent means current value is empty
+      if (next.startLine > token.startLine && next.startCol <= token.startCol) {
+        yield {
+          line: token.startLine,
+          column: token.startCol,
+          rule: id,
+          level: "error",
+          message: `empty value in block mapping`,
+        };
+      }
     }
   }
 
-  if (forbidInFlowMappings) {
-    if (
-      token.type === "value" &&
-      next &&
-      (next.type === "flow-mapping-end" || (next.type === "scalar" && next.value === ""))
-    ) {
+  if (forbidInFlowMappings && token.type === "value") {
+    if (next && next.type === "flow-mapping-end") {
       yield {
         line: token.startLine,
         column: token.startCol,

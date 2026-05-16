@@ -8,34 +8,59 @@ interface OrderTracker {
   indent: number;
 }
 
-const orderStacks: OrderTracker[] = [];
+let orderStacks: OrderTracker[] = [];
 
 export function reset(): void {
-  orderStacks.length = 0;
+  orderStacks = [];
 }
 
 export function* check(
-  conf: RuleConf,
+  _conf: RuleConf,
   token: YamlToken | undefined,
-  _prev: YamlToken | undefined,
-  next: YamlToken | undefined,
+  prev: YamlToken | undefined,
+  _next: YamlToken | undefined,
   _nextnext: YamlToken | undefined,
   _context: TokenContext,
 ): Generator<LintProblem> {
   if (!token) return;
 
-  if (token.type === "block-mapping-start" || token.type === "flow-mapping-start") {
+  if (token.type === "stream-start") {
+    orderStacks = [];
+    return;
+  }
+
+  if (token.type === "flow-mapping-start") {
     orderStacks.push({ lastKey: null, indent: token.startCol });
-  } else if (token.type === "block-end" || token.type === "flow-mapping-end") {
-    orderStacks.pop();
-  } else if (token.type === "key" && next && next.type === "scalar") {
-    const keyValue = next.value || "";
+    return;
+  }
+
+  if (token.type === "flow-mapping-end") {
     if (orderStacks.length > 0) {
-      const current = orderStacks[orderStacks.length - 1];
+      orderStacks.pop();
+    }
+    return;
+  }
+
+  // Detect keys: scalar followed by value token (same as key-duplicates)
+  if (token.type === "value" && prev && prev.type === "scalar" && prev.value !== undefined) {
+    const keyCol = prev.startCol;
+    const keyValue = prev.value;
+
+    // Manage indent levels
+    while (orderStacks.length > 0 && orderStacks[orderStacks.length - 1].indent > keyCol) {
+      orderStacks.pop();
+    }
+
+    if (orderStacks.length === 0 || orderStacks[orderStacks.length - 1].indent < keyCol) {
+      orderStacks.push({ lastKey: null, indent: keyCol });
+    }
+
+    const current = orderStacks[orderStacks.length - 1];
+    if (current.indent === keyCol) {
       if (current.lastKey !== null && keyValue < current.lastKey) {
         yield {
-          line: next.startLine,
-          column: next.startCol,
+          line: prev.startLine,
+          column: prev.startCol,
           rule: id,
           level: "error",
           message: `wrong ordering of key "${keyValue}" in mapping`,

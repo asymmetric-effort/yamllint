@@ -1,6 +1,6 @@
 {
   "name": "@asymmetric-effort/yamllint",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A zero-dependency TypeScript YAML parser, linter, and validator with detailed error reporting",
   "type": "module",
   "main": "build/index.js",
@@ -48,6 +48,7 @@
     "@types/node": "^25.8.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
+    "@vitest/coverage-v8": "^4.1.6",
     "eslint": "^10.4.0",
     "markdownlint-cli": "^0.48.0",
     "prettier": "^3.3.0",

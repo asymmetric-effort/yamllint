@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://yamllint.asymmetric-effort.com/sitemap.xml
