@@ -51,7 +51,7 @@
     "markdownlint-cli": "^0.48.0",
     "prettier": "^3.3.0",
     "tsx": "^4.22.0",
-    "typescript": "^5.5.0",
+    "typescript": "^6.0.3",
     "vitest": "^4.1.6"
   },
   "dependencies": {
