@@ -70,7 +70,7 @@ jobs:
   publish:
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && vars.NPM_PUBLISH == 'true'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
