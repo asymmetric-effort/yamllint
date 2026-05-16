@@ -2,11 +2,6 @@ import { describe, it, expect } from "vitest";
 import { lint } from "../../src/linter.js";
 import { loadConfig } from "../../src/config.js";
 
-function lintWith(source: string, ruleConfig: string) {
-  const { resolved } = loadConfig(undefined, `extends: default\nrules:\n${ruleConfig}`);
-  return lint(source, resolved);
-}
-
 function onlyRule(source: string, rule: string, config: string = "") {
   const allRules = [
     "anchors", "braces", "brackets", "colons", "commas", "comments",
