@@ -7,3 +7,5 @@ coverage
 bun.lock
 playwright-report
 test-results
+site/node_modules
+site/dist

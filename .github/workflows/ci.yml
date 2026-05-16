@@ -51,10 +51,12 @@ jobs:
         with:
           name: build-artifacts
           path: build/
+      - name: Build site
+        run: cd site && npm install && npx vite build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: site/
+          path: site/dist/
 
   deploy-pages:
     needs: build
