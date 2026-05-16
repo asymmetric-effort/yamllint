@@ -12,27 +12,91 @@ const DEFAULT_CONFIG: YamllintConfig = {
 };
 
 const PRESET_DEFAULT: Record<string, { level: Severity; conf?: RuleConf }> = {
-  anchors: { level: "error", conf: { "forbid-undeclared-aliases": true, "forbid-duplicated-anchors": false, "forbid-unused-anchors": false } },
-  braces: { level: "error", conf: { "forbid": false, "min-spaces-inside": 0, "max-spaces-inside": 0, "min-spaces-inside-empty": -1, "max-spaces-inside-empty": -1 } },
-  brackets: { level: "error", conf: { "forbid": false, "min-spaces-inside": 0, "max-spaces-inside": 0, "min-spaces-inside-empty": -1, "max-spaces-inside-empty": -1 } },
+  anchors: {
+    level: "error",
+    conf: {
+      "forbid-undeclared-aliases": true,
+      "forbid-duplicated-anchors": false,
+      "forbid-unused-anchors": false,
+    },
+  },
+  braces: {
+    level: "error",
+    conf: {
+      forbid: false,
+      "min-spaces-inside": 0,
+      "max-spaces-inside": 0,
+      "min-spaces-inside-empty": -1,
+      "max-spaces-inside-empty": -1,
+    },
+  },
+  brackets: {
+    level: "error",
+    conf: {
+      forbid: false,
+      "min-spaces-inside": 0,
+      "max-spaces-inside": 0,
+      "min-spaces-inside-empty": -1,
+      "max-spaces-inside-empty": -1,
+    },
+  },
   colons: { level: "error", conf: { "max-spaces-before": 0, "max-spaces-after": 1 } },
-  commas: { level: "error", conf: { "max-spaces-before": 0, "min-spaces-after": 1, "max-spaces-after": 1 } },
-  comments: { level: "warning", conf: { "require-starting-space": true, "ignore-shebangs": true, "min-spaces-from-content": 2 } },
+  commas: {
+    level: "error",
+    conf: { "max-spaces-before": 0, "min-spaces-after": 1, "max-spaces-after": 1 },
+  },
+  comments: {
+    level: "warning",
+    conf: { "require-starting-space": true, "ignore-shebangs": true, "min-spaces-from-content": 2 },
+  },
   "comments-indentation": { level: "warning" },
   "document-end": { level: "error", conf: { present: false } },
   "document-start": { level: "warning", conf: { present: true } },
-  "empty-lines": { level: "error", conf: { "max": 2, "max-start": 0, "max-end": 0 } },
-  "empty-values": { level: "error", conf: { "forbid-in-block-mappings": false, "forbid-in-flow-mappings": false, "forbid-in-block-sequences": false } },
-  "float-values": { level: "error", conf: { "forbid-scientific-notation": false, "forbid-nan": false, "forbid-inf": false } },
+  "empty-lines": { level: "error", conf: { max: 2, "max-start": 0, "max-end": 0 } },
+  "empty-values": {
+    level: "error",
+    conf: {
+      "forbid-in-block-mappings": false,
+      "forbid-in-flow-mappings": false,
+      "forbid-in-block-sequences": false,
+    },
+  },
+  "float-values": {
+    level: "error",
+    conf: { "forbid-scientific-notation": false, "forbid-nan": false, "forbid-inf": false },
+  },
   hyphens: { level: "error", conf: { "max-spaces-after": 1 } },
-  indentation: { level: "error", conf: { spaces: 2, "indent-sequences": true, "check-multi-line-strings": false } },
+  indentation: {
+    level: "error",
+    conf: { spaces: 2, "indent-sequences": true, "check-multi-line-strings": false },
+  },
   "key-duplicates": { level: "error", conf: { "forbid-duplicated-merge-keys": false } },
   "key-ordering": { level: "error" },
-  "line-length": { level: "error", conf: { max: 80, "allow-non-breakable-words": true, "allow-non-breakable-inline-mappings": false, "allow-uri": true } },
+  "line-length": {
+    level: "error",
+    conf: {
+      max: 80,
+      "allow-non-breakable-words": true,
+      "allow-non-breakable-inline-mappings": false,
+      "allow-uri": true,
+    },
+  },
   "new-line-at-end-of-file": { level: "error" },
   "new-lines": { level: "error", conf: { type: "unix" } },
-  "octal-values": { level: "error", conf: { "forbid-implicit-octal": true, "forbid-explicit-octal": true } },
-  "quoted-strings": { level: "error", conf: { "quote-type": "any", required: false, "extra-required": [], "extra-allowed": [], "allow-quoted-quotes": false } },
+  "octal-values": {
+    level: "error",
+    conf: { "forbid-implicit-octal": true, "forbid-explicit-octal": true },
+  },
+  "quoted-strings": {
+    level: "error",
+    conf: {
+      "quote-type": "any",
+      required: false,
+      "extra-required": [],
+      "extra-allowed": [],
+      "allow-quoted-quotes": false,
+    },
+  },
   "trailing-spaces": { level: "error" },
   truthy: { level: "warning", conf: { "allowed-values": ["true", "false"], "check-keys": true } },
 };

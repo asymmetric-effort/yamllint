@@ -4,11 +4,29 @@ import { loadConfig } from "../../src/config.js";
 
 function onlyRule(source: string, rule: string, config: string = "") {
   const allRules = [
-    "anchors", "braces", "brackets", "colons", "commas", "comments",
-    "comments-indentation", "document-end", "document-start", "empty-lines",
-    "empty-values", "float-values", "hyphens", "indentation", "key-duplicates",
-    "key-ordering", "line-length", "new-line-at-end-of-file", "new-lines",
-    "octal-values", "quoted-strings", "trailing-spaces", "truthy",
+    "anchors",
+    "braces",
+    "brackets",
+    "colons",
+    "commas",
+    "comments",
+    "comments-indentation",
+    "document-end",
+    "document-start",
+    "empty-lines",
+    "empty-values",
+    "float-values",
+    "hyphens",
+    "indentation",
+    "key-duplicates",
+    "key-ordering",
+    "line-length",
+    "new-line-at-end-of-file",
+    "new-lines",
+    "octal-values",
+    "quoted-strings",
+    "trailing-spaces",
+    "truthy",
   ];
   const ruleLines = allRules.map((r) => {
     if (r === rule) {
@@ -70,12 +88,12 @@ describe("new-lines rule", () => {
 
 describe("truthy rule", () => {
   it("detects yes/no truthy values", () => {
-    const result = onlyRule("key: yes\n", "truthy", "    allowed-values: [\"true\", \"false\"]");
+    const result = onlyRule("key: yes\n", "truthy", '    allowed-values: ["true", "false"]');
     expect(result.problems.filter((p) => p.rule === "truthy").length).toBeGreaterThan(0);
   });
 
   it("allows true/false", () => {
-    const result = onlyRule("key: true\n", "truthy", "    allowed-values: [\"true\", \"false\"]");
+    const result = onlyRule("key: true\n", "truthy", '    allowed-values: ["true", "false"]');
     expect(result.problems.filter((p) => p.rule === "truthy")).toHaveLength(0);
   });
 });
@@ -94,7 +112,11 @@ describe("indentation rule", () => {
 
 describe("empty-lines rule", () => {
   it("detects too many consecutive empty lines", () => {
-    const result = onlyRule("a: 1\n\n\n\nb: 2\n", "empty-lines", "    max: 2\n    max-start: 0\n    max-end: 0");
+    const result = onlyRule(
+      "a: 1\n\n\n\nb: 2\n",
+      "empty-lines",
+      "    max: 2\n    max-start: 0\n    max-end: 0",
+    );
     expect(result.problems.filter((p) => p.rule === "empty-lines").length).toBeGreaterThan(0);
   });
 });
@@ -118,24 +140,40 @@ describe("document-start rule", () => {
 
 describe("octal-values rule", () => {
   it("detects implicit octal", () => {
-    const result = onlyRule("key: 0777\n", "octal-values", "    forbid-implicit-octal: true\n    forbid-explicit-octal: true");
+    const result = onlyRule(
+      "key: 0777\n",
+      "octal-values",
+      "    forbid-implicit-octal: true\n    forbid-explicit-octal: true",
+    );
     expect(result.problems.filter((p) => p.rule === "octal-values").length).toBeGreaterThan(0);
   });
 
   it("detects explicit octal", () => {
-    const result = onlyRule("key: 0o777\n", "octal-values", "    forbid-implicit-octal: true\n    forbid-explicit-octal: true");
+    const result = onlyRule(
+      "key: 0o777\n",
+      "octal-values",
+      "    forbid-implicit-octal: true\n    forbid-explicit-octal: true",
+    );
     expect(result.problems.filter((p) => p.rule === "octal-values").length).toBeGreaterThan(0);
   });
 });
 
 describe("float-values rule", () => {
   it("detects scientific notation", () => {
-    const result = onlyRule("key: 1.0e6\n", "float-values", "    forbid-scientific-notation: true\n    forbid-nan: false\n    forbid-inf: false");
+    const result = onlyRule(
+      "key: 1.0e6\n",
+      "float-values",
+      "    forbid-scientific-notation: true\n    forbid-nan: false\n    forbid-inf: false",
+    );
     expect(result.problems.filter((p) => p.rule === "float-values").length).toBeGreaterThan(0);
   });
 
   it("detects NaN", () => {
-    const result = onlyRule("key: .nan\n", "float-values", "    forbid-scientific-notation: false\n    forbid-nan: true\n    forbid-inf: false");
+    const result = onlyRule(
+      "key: .nan\n",
+      "float-values",
+      "    forbid-scientific-notation: false\n    forbid-nan: true\n    forbid-inf: false",
+    );
     expect(result.problems.filter((p) => p.rule === "float-values").length).toBeGreaterThan(0);
   });
 });

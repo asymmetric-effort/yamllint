@@ -1,8 +1,4 @@
-import type {
-  LintProblem,
-  ResolvedRuleConfig,
-  TokenContext,
-} from "./types.js";
+import type { LintProblem, ResolvedRuleConfig, TokenContext } from "./types.js";
 import { tokenize, extractComments, getLines } from "./parser.js";
 import { getRuleDefinition } from "./rules/index.js";
 import { parseDirectives, filterProblems } from "./directives.js";

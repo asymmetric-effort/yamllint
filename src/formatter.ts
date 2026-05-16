@@ -37,10 +37,7 @@ function resolveFormat(format: OutputFormat): OutputFormat {
   }
 
   // Detect color support
-  if (
-    process.stdout.isTTY &&
-    (process.env.TERM !== "dumb" || process.env.FORCE_COLOR)
-  ) {
+  if (process.stdout.isTTY && (process.env.TERM !== "dumb" || process.env.FORCE_COLOR)) {
     return "colored";
   }
 
@@ -76,9 +73,7 @@ function formatColored(problems: LintProblem[], filename: string): string {
   for (const p of problems) {
     const color = p.level === "error" ? RED : YELLOW;
     const ruleStr = p.rule ? ` ${CYAN}(${p.rule})${RESET}` : "";
-    lines.push(
-      `  ${p.line}:${p.column}      ${color}${p.level}${RESET}  ${p.message}${ruleStr}`,
-    );
+    lines.push(`  ${p.line}:${p.column}      ${color}${p.level}${RESET}  ${p.message}${ruleStr}`);
   }
   return lines.join("\n");
 }

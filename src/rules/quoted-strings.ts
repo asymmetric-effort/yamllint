@@ -83,10 +83,27 @@ export function* check(
 function valueNeedsQuoting(value: string): boolean {
   // Values that would be interpreted differently without quotes
   const specialValues = [
-    "true", "false", "yes", "no", "on", "off",
-    "null", "~", "",
-    "True", "False", "Yes", "No", "On", "Off",
-    "TRUE", "FALSE", "YES", "NO", "ON", "OFF",
+    "true",
+    "false",
+    "yes",
+    "no",
+    "on",
+    "off",
+    "null",
+    "~",
+    "",
+    "True",
+    "False",
+    "Yes",
+    "No",
+    "On",
+    "Off",
+    "TRUE",
+    "FALSE",
+    "YES",
+    "NO",
+    "ON",
+    "OFF",
     "NULL",
   ];
   if (specialValues.includes(value)) return true;

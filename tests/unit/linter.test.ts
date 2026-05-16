@@ -63,7 +63,10 @@ describe("linter", () => {
   });
 
   it("respects disabled rules", () => {
-    const result = lintWithConfig("---\nkey: value   \n", "extends: default\nrules:\n  trailing-spaces: disable");
+    const result = lintWithConfig(
+      "---\nkey: value   \n",
+      "extends: default\nrules:\n  trailing-spaces: disable",
+    );
     const trailing = result.problems.filter((p) => p.rule === "trailing-spaces");
     expect(trailing).toHaveLength(0);
   });

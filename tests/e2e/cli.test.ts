@@ -38,11 +38,7 @@ describe("CLI", () => {
   });
 
   it("lints a passing file with exit 0", () => {
-    const { status } = run([
-      join(FIXTURES_DIR, "passes/simple.yaml"),
-      "-d",
-      "extends: default",
-    ]);
+    const { status } = run([join(FIXTURES_DIR, "passes/simple.yaml"), "-d", "extends: default"]);
     expect(status).toBe(0);
   });
 
@@ -136,11 +132,7 @@ describe("CLI", () => {
       "  comments-indentation: disable",
       "  new-lines: disable",
     ].join("\n");
-    const { status } = run([
-      join(FIXTURES_DIR, "fails/trailing-spaces.yaml"),
-      "-d",
-      config,
-    ]);
+    const { status } = run([join(FIXTURES_DIR, "fails/trailing-spaces.yaml"), "-d", config]);
     expect(status).toBe(0);
   });
 

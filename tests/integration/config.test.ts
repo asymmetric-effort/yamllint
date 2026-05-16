@@ -63,11 +63,9 @@ describe("configuration integration", () => {
   });
 
   it("comment directives suppress problems", () => {
-    const source = [
-      "---",
-      "key: value   # yamllint disable-line rule:trailing-spaces",
-      "",
-    ].join("\n");
+    const source = ["---", "key: value   # yamllint disable-line rule:trailing-spaces", ""].join(
+      "\n",
+    );
     const { resolved } = loadConfig(
       undefined,
       "extends: default\nrules:\n  trailing-spaces: enable",

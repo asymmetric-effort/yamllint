@@ -97,11 +97,7 @@ Options:
   -                     Read YAML from stdin`);
 }
 
-function collectFiles(
-  paths: string[],
-  yamlPatterns: string[],
-  ignorePattern: string,
-): string[] {
+function collectFiles(paths: string[], yamlPatterns: string[], ignorePattern: string): string[] {
   const files: string[] = [];
   const ignoreLines = ignorePattern
     .split("\n")

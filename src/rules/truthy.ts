@@ -4,13 +4,28 @@ export const id = "truthy";
 export const type = "token";
 
 const TRUTHY_VALUES = [
-  "TRUE", "True", "true",
-  "FALSE", "False", "false",
-  "YES", "Yes", "yes",
-  "NO", "No", "no",
-  "ON", "On", "on",
-  "OFF", "Off", "off",
-  "y", "Y", "n", "N",
+  "TRUE",
+  "True",
+  "true",
+  "FALSE",
+  "False",
+  "false",
+  "YES",
+  "Yes",
+  "yes",
+  "NO",
+  "No",
+  "no",
+  "ON",
+  "On",
+  "on",
+  "OFF",
+  "Off",
+  "off",
+  "y",
+  "Y",
+  "n",
+  "N",
 ];
 
 export function* check(

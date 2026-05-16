@@ -9,7 +9,11 @@ const sampleProblems: LintProblem[] = [
 
 describe("formatProblems", () => {
   it("returns empty string for no problems", () => {
-    const output = formatProblems([], { format: "standard", filename: "test.yaml", noWarnings: false });
+    const output = formatProblems([], {
+      format: "standard",
+      filename: "test.yaml",
+      noWarnings: false,
+    });
     expect(output).toBe("");
   });
 
@@ -64,7 +68,9 @@ describe("hasErrors", () => {
   });
 
   it("returns false when no errors", () => {
-    expect(hasErrors([{ line: 1, column: 1, rule: "x", level: "warning", message: "w" }])).toBe(false);
+    expect(hasErrors([{ line: 1, column: 1, rule: "x", level: "warning", message: "w" }])).toBe(
+      false,
+    );
   });
 });
 
@@ -74,6 +80,8 @@ describe("hasWarnings", () => {
   });
 
   it("returns false when no warnings", () => {
-    expect(hasWarnings([{ line: 1, column: 1, rule: "x", level: "error", message: "e" }])).toBe(false);
+    expect(hasWarnings([{ line: 1, column: 1, rule: "x", level: "error", message: "e" }])).toBe(
+      false,
+    );
   });
 });

@@ -32,15 +32,9 @@ export type TokenRuleChecker = (
   context: TokenContext,
 ) => Generator<LintProblem>;
 
-export type CommentRuleChecker = (
-  conf: RuleConf,
-  comment: Comment,
-) => Generator<LintProblem>;
+export type CommentRuleChecker = (conf: RuleConf, comment: Comment) => Generator<LintProblem>;
 
-export type LineRuleChecker = (
-  conf: RuleConf,
-  line: LineInfo,
-) => Generator<LintProblem>;
+export type LineRuleChecker = (conf: RuleConf, line: LineInfo) => Generator<LintProblem>;
 
 export type RuleChecker = TokenRuleChecker | CommentRuleChecker | LineRuleChecker;
 

@@ -20,8 +20,11 @@ export function* check(
     if (
       token.type === "value" &&
       next &&
-      (next.type === "key" || next.type === "block-end" || next.type === "stream-end" ||
-        next.type === "document-start" || next.type === "document-end")
+      (next.type === "key" ||
+        next.type === "block-end" ||
+        next.type === "stream-end" ||
+        next.type === "document-start" ||
+        next.type === "document-end")
     ) {
       yield {
         line: token.startLine,
