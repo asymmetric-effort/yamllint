@@ -1,138 +1,133 @@
-import { homePage } from "./pages/home.js";
-import { cliPage } from "./pages/cli.js";
-import { apiPage } from "./pages/api.js";
-import { validatorPage } from "./pages/validator.js";
+import { HomePage } from "./pages/home.js";
+import { ApiPage } from "./pages/api.js";
+import { CliPage } from "./pages/cli.js";
+import { ValidatorPage } from "./pages/validator.js";
 
 declare const __APP_VERSION__: string;
+const VERSION = typeof __APP_VERSION__ !== "undefined" ? __APP_VERSION__ : "0.0.0";
 
-const routes: Record<string, () => string> = {
-  "/": homePage,
-  "/validator": validatorPage,
-  "/cli": cliPage,
-  "/api": apiPage,
-};
+type PageComponent = () => string;
 
-function nav(currentPath: string): string {
+const ROUTES: Record<string, PageComponent> = Object.create(null);
+ROUTES["/"] = HomePage;
+ROUTES["/validator"] = ValidatorPage;
+ROUTES["/cli"] = CliPage;
+ROUTES["/api"] = ApiPage;
+
+function getPath(): string {
+  const hash = window.location.hash.replace(/^#\/?/, "/");
+  return hash === "" ? "/" : hash;
+}
+
+function renderNav(currentPath: string): string {
   const links = [
-    { href: "/", label: "Home" },
-    { href: "/validator", label: "Validator" },
-    { href: "/cli", label: "CLI" },
-    { href: "/api", label: "API" },
+    { to: "/", label: "Home", exact: true },
+    { to: "/validator", label: "Validator" },
+    { to: "/cli", label: "CLI" },
+    { to: "/api", label: "API" },
   ];
 
   const navLinks = links
-    .map((l) => {
-      const active =
-        l.href === "/"
-          ? currentPath === "/"
-          : currentPath.startsWith(l.href);
-      return `<a href="#${l.href}" class="${active ? "active" : ""}">${l.label}</a>`;
+    .map((link) => {
+      const isActive = link.exact ? currentPath === link.to : currentPath.startsWith(link.to);
+      return `<a href="#${link.to}" class="${isActive ? "active" : ""}">${link.label}</a>`;
     })
     .join("");
 
-  return `<nav>
-    <a href="#/" class="brand">
-      <img src="/logo.png" alt="yamllint">
-      yamllint
-    </a>
-    <div class="links">${navLinks}</div>
+  return `<nav class="nav">
+    <a href="#/" class="nav-brand">yamllint</a>
+    <div class="nav-links">${navLinks}</div>
   </nav>`;
 }
 
-function footer(): string {
-  return `<footer>
-    <div class="links">
-      <a href="https://github.com/asymmetric-effort/yamllint">GitHub</a>
-      <a href="https://www.npmjs.com/package/@asymmetric-effort/yamllint">npm</a>
-      <a href="https://github.com/asymmetric-effort/yamllint/blob/main/LICENSE.txt">MIT License</a>
+function renderFooter(): string {
+  return `<footer class="footer" role="contentinfo">
+    <div class="footer-inner">
+      <span>v${VERSION}</span>
+      <span>MIT License \u00A9 2026 Asymmetric Effort, LLC</span>
+      <span>
+        <a href="https://github.com/asymmetric-effort/yamllint" target="_blank" rel="noopener noreferrer">GitHub</a>
+        \u00B7
+        <a href="https://github.com/asymmetric-effort/yamllint/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer">Security</a>
+        \u00B7
+        <a href="https://github.com/asymmetric-effort/yamllint/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contributing</a>
+      </span>
     </div>
-    <p>&copy; Asymmetric Effort, LLC &middot; v${__APP_VERSION__}</p>
   </footer>`;
-}
-
-function getPath(): string {
-  const hash = window.location.hash.slice(1) || "/";
-  return hash;
-}
-
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
 }
 
 function render(): void {
   const path = getPath();
-  const page = routes[path] || routes["/"];
-  const app = document.getElementById("app");
-  if (!app) return;
+  const root = document.getElementById("root")!;
+  const page = path in ROUTES ? ROUTES[path] : ROUTES["/"];
 
-  app.innerHTML = nav(path) + `<main>${page()}</main>` + footer();
+  root.innerHTML = `
+    ${renderNav(path)}
+    <main class="main">${page()}</main>
+    ${renderFooter()}
+  `;
 
-  // Bind validator interactions if on that page
   if (path === "/validator") {
-    bindValidator();
+    bindValidatorEvents();
   }
 
   updateHead(path);
 }
 
 function updateHead(path: string): void {
-  const titles: Record<string, string> = {
-    "/": "yamllint - YAML Linter & Validator",
-    "/validator": "YAML Validator - yamllint",
-    "/cli": "CLI Reference - yamllint",
-    "/api": "API Reference - yamllint",
-  };
-  document.title = titles[path] || titles["/"];
+  const titles: Record<string, string> = Object.create(null);
+  titles["/"] = "yamllint \u2014 YAML Linter & Validator";
+  titles["/validator"] = "YAML Validator \u2014 yamllint";
+  titles["/cli"] = "CLI Reference \u2014 yamllint";
+  titles["/api"] = "API Reference \u2014 yamllint";
+
+  document.title = path in titles ? titles[path] : titles["/"];
+
+  let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+  if (!canonical) {
+    canonical = document.createElement("link");
+    canonical.rel = "canonical";
+    document.head.appendChild(canonical);
+  }
+  canonical.href = `https://yamllint.asymmetric-effort.com/${path === "/" ? "" : "#" + path}`;
 }
 
-function bindValidator(): void {
-  const textarea = document.getElementById("yaml-input") as HTMLTextAreaElement | null;
-  const resultDiv = document.getElementById("result") as HTMLDivElement | null;
-  if (!textarea || !resultDiv) return;
+function bindValidatorEvents(): void {
+  const input = document.getElementById("yaml-input") as HTMLTextAreaElement;
+  const resultDiv = document.getElementById("result-container")!;
 
   document.getElementById("btn-validate")?.addEventListener("click", () => {
-    const input = textarea.value;
-    if (!input.trim()) {
-      showResult(resultDiv, "Please enter YAML to validate.", "error");
+    const value = input.value.trim();
+    if (!value) {
+      resultDiv.innerHTML = `<div class="result result-error">Please enter YAML to validate.</div>`;
       return;
     }
-    // Basic YAML validation check
-    try {
-      // Check for common YAML syntax errors
-      const lines = input.split("\n");
-      let hasError = false;
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        if (line.includes("\t")) {
-          showResult(resultDiv, `Line ${i + 1}: tab character found (use spaces for indentation)`, "error");
-          hasError = true;
-          break;
-        }
+    const errors: string[] = [];
+    const lines = value.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].includes("\t")) {
+        errors.push(`Line ${i + 1}: tab character found (use spaces for indentation)`);
       }
-      if (!hasError) {
-        showResult(resultDiv, "Valid YAML - no issues found.", "success");
+      if (lines[i] !== lines[i].trimEnd()) {
+        errors.push(`Line ${i + 1}: trailing spaces`);
       }
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : String(e);
-      showResult(resultDiv, escapeHtml(msg), "error");
+    }
+    if (errors.length > 0) {
+      resultDiv.innerHTML = `<div class="result result-error">${escapeHtml(errors.join("\n"))}</div>`;
+    } else {
+      resultDiv.innerHTML = `<div class="result result-success">Valid YAML \u2014 no issues found.</div>`;
     }
   });
 
   document.getElementById("btn-clear")?.addEventListener("click", () => {
-    textarea.value = "";
-    resultDiv.className = "result";
+    input.value = "";
     resultDiv.innerHTML = "";
   });
 }
 
-function showResult(el: HTMLDivElement, message: string, type: "success" | "error"): void {
-  el.className = `result visible ${type}`;
-  el.innerHTML = message;
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-window.addEventListener("hashchange", render);
 render();
+window.addEventListener("hashchange", render);
