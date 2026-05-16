@@ -2,7 +2,7 @@ import type { LintProblem, ResolvedRuleConfig, TokenContext } from "./types.js";
 import { tokenize, extractComments, getLines } from "./parser.js";
 import { getRuleDefinition } from "./rules/index.js";
 import { parseDirectives, filterProblems } from "./directives.js";
-import { parse as parseYamlDoc } from "yaml";
+import { checkSyntax } from "./yaml-parser.js";
 
 export interface LintResult {
   problems: LintProblem[];
@@ -19,20 +19,15 @@ export function lint(source: string, rules: ResolvedRuleConfig[]): LintResult {
   const problems: LintProblem[] = [];
 
   // Check for YAML syntax errors first
-  try {
-    parseYamlDoc(source, { strict: true });
-  } catch (e: unknown) {
-    if (e instanceof Error) {
-      const lineMatch = e.message.match(/at line (\d+)/);
-      const colMatch = e.message.match(/column (\d+)/);
-      problems.push({
-        line: lineMatch ? parseInt(lineMatch[1]) : 1,
-        column: colMatch ? parseInt(colMatch[1]) : 1,
-        rule: null,
-        level: "error",
-        message: `syntax error: ${e.message.split("\n")[0]}`,
-      });
-    }
+  const syntaxError = checkSyntax(source);
+  if (syntaxError) {
+    problems.push({
+      line: syntaxError.line,
+      column: syntaxError.column,
+      rule: null,
+      level: "error",
+      message: `syntax error: ${syntaxError.message}`,
+    });
   }
 
   // Tokenize

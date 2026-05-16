@@ -1,6 +1,6 @@
 import { readFileSync, existsSync } from "fs";
 import { join, dirname } from "path";
-import { parse as parseYamlString } from "yaml";
+import { parseYaml as parseYamlString } from "./yaml-parser.js";
 import type { YamllintConfig, RuleConf, ResolvedRuleConfig, Severity } from "./types.js";
 import { getAllRuleIds } from "./rules/index.js";
 
@@ -181,11 +181,11 @@ export function loadConfig(
   let rawConfig: YamllintConfig;
 
   if (configData) {
-    rawConfig = parseYamlString(configData) || {};
+    rawConfig = (parseYamlString(configData) as YamllintConfig) || { rules: {} };
     rawConfig.rules = rawConfig.rules || {};
   } else if (configFile) {
     const content = readFileSync(configFile, "utf-8");
-    rawConfig = parseYamlString(content) || {};
+    rawConfig = (parseYamlString(content) as YamllintConfig) || { rules: {} };
     rawConfig.rules = rawConfig.rules || {};
   } else {
     rawConfig = { ...DEFAULT_CONFIG };

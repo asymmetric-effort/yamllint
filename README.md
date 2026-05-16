@@ -5,8 +5,7 @@
 <h1 align="center">@asymmetric-effort/yamllint</h1>
 
 <p align="center">
-  A pure TypeScript YAML linter with configurable rules and detailed error reporting.
-  Zero runtime dependencies (besides the <code>yaml</code> parser).
+  A zero-dependency TypeScript YAML parser, linter, and validator with detailed error reporting.
   Feature-compatible with <a href="https://github.com/adrienverge/yamllint">adrienverge/yamllint</a>.
 </p>
 
