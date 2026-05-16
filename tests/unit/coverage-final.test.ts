@@ -1,7 +1,7 @@
 /**
  * Final coverage push — targeting every remaining uncovered line.
  */
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "@asymmetric-effort/nogginlessdom";
 import { lint } from "../../src/linter.js";
 import { loadConfig, findConfigFile } from "../../src/config.js";
 import { tokenize } from "../../src/parser.js";

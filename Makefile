@@ -55,20 +55,12 @@ lint:
 # ============================================================================
 test:
 	@echo "Running unit tests..."
-	npx vitest run $(TEST_DIR)/unit
+	node --import tsx/esm --test $(TEST_DIR)/unit/*.test.ts
 	@echo "Running integration tests..."
-	npx vitest run $(TEST_DIR)/integration
+	node --import tsx/esm --test $(TEST_DIR)/integration/*.test.ts
 	@echo "Running e2e tests..."
-	npx vitest run $(TEST_DIR)/e2e
+	node --import tsx/esm --test $(TEST_DIR)/e2e/*.test.ts
 	@echo "All tests passed."
-
-# ============================================================================
-# Test with coverage
-# ============================================================================
-test-coverage:
-	@echo "Running tests with coverage..."
-	npx vitest run --coverage
-	@echo "Coverage report generated."
 
 # ============================================================================
 # Build — compile TypeScript, create binary, pack npm package

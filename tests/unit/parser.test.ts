@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "@asymmetric-effort/nogginlessdom";
 import { tokenize, extractComments, getLines } from "../../src/parser.js";
 
 describe("tokenize", () => {

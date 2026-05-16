@@ -1,4 +1,12 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  afterEach,
+  spyOn,
+  mock,
+} from "@asymmetric-effort/nogginlessdom";
 import { join } from "path";
 
 const FIXTURES_DIR = join(import.meta.dirname, "../fixtures");
@@ -12,20 +20,20 @@ beforeEach(() => {
   exitCode = undefined;
   stdoutOutput = [];
   stderrOutput = [];
-  vi.spyOn(process, "exit").mockImplementation((code?: number) => {
+  spyOn(process, "exit").mockImplementation((code?: number) => {
     exitCode = code ?? 0;
     throw new Error(`EXIT_${code}`);
   });
-  vi.spyOn(console, "log").mockImplementation((...args: unknown[]) => {
+  spyOn(console, "log").mockImplementation((...args: unknown[]) => {
     stdoutOutput.push(args.map(String).join(" "));
   });
-  vi.spyOn(console, "error").mockImplementation((...args: unknown[]) => {
+  spyOn(console, "error").mockImplementation((...args: unknown[]) => {
     stderrOutput.push(args.map(String).join(" "));
   });
 });
 
 afterEach(() => {
-  vi.restoreAllMocks();
+  mock.restoreAllMocks();
 });
 
 async function runCli(args: string[]) {

@@ -1,7 +1,7 @@
 /**
  * Additional targeted tests to push coverage above 98%.
  */
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "@asymmetric-effort/nogginlessdom";
 import { lint } from "../../src/linter.js";
 import { loadConfig } from "../../src/config.js";
 import { tokenize } from "../../src/parser.js";

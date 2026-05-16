@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "@asymmetric-effort/nogginlessdom";
 import { formatProblems, hasErrors, hasWarnings } from "../../src/formatter.js";
 import type { LintProblem } from "../../src/types.js";
 

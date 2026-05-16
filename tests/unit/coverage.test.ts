@@ -1,7 +1,7 @@
 /**
  * Targeted tests to reach >=98% coverage across all source files.
  */
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "@asymmetric-effort/nogginlessdom";
 import { lint } from "../../src/linter.js";
 import { loadConfig, findConfigFile, resolveConfig } from "../../src/config.js";
 import { tokenize, extractComments, getLines } from "../../src/parser.js";

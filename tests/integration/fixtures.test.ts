@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "@asymmetric-effort/nogginlessdom";
 import { readFileSync, readdirSync } from "fs";
 import { join } from "path";
 import { lint } from "../../src/linter.js";

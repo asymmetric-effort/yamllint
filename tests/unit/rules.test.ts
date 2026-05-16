@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "@asymmetric-effort/nogginlessdom";
 import { lint } from "../../src/linter.js";
 import { loadConfig } from "../../src/config.js";
 

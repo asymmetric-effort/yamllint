@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "@asymmetric-effort/nogginlessdom";
 import { spawnSync } from "child_process";
 import { join } from "path";
 import { writeFileSync, mkdirSync, rmSync, existsSync, chmodSync } from "fs";
