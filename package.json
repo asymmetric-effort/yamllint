@@ -44,7 +44,7 @@
   },
   "homepage": "https://yamllint.asymmetric-effort.com",
   "devDependencies": {
-    "@asymmetric-effort/nogginlessdom": "^0.0.5",
+    "@asymmetric-effort/nogginlessdom": "^0.0.22",
     "@types/node": "^25.8.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
